@@ -1,7 +1,7 @@
 param()
 $ErrorActionPreference='Stop'
 $repo='C:\AI\ayan-os'
-$icon=Join-Path $repo 'public\ayan-os\ayan-os.ico'
+$icon=Join-Path $repo 'public\ayan-os\ayan-os-static.ico'
 $start=Join-Path $repo 'scripts\ayan-os\native\start-native.ps1'
 $backup='C:\AI\ayan-os-runtime\windows-native\backup-shortcuts'
 $desktop=[Environment]::GetFolderPath('DesktopDirectory')
@@ -28,7 +28,7 @@ $link.TargetPath=Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershe
 $link.Arguments='-NoProfile -ExecutionPolicy Bypass -File "'+$start+'" -OpenBrowser'
 $link.WorkingDirectory=$repo
 $link.IconLocation=$icon+',0'
-$link.Description='阿岩 OS V0.2.0 - Windows 原生控制中心'
+$link.Description='阿岩 OS V0.2.4 - 原版 Canvas 兼容入口 / Windows Agent Bridge'
 $link.Save()
 $check=$shell.CreateShortcut($path)
 if($check.Arguments -notmatch 'start-native\.ps1' -or $check.Arguments -match 'docker'){throw 'SHORTCUT_SWITCH_FAILED'}

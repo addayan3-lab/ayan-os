@@ -14,7 +14,7 @@ if($LASTEXITCODE -ne 0){throw 'JS_CHECK_FAILED'}
 if($LASTEXITCODE -ne 0){throw 'PATCHER_CHECK_FAILED'}
 & $docker exec -u 0 $target mkdir -p /opt/agent-canvas/frontend/ayan-os
 if($LASTEXITCODE -ne 0){throw 'MKDIR_FAILED'}
-foreach($file in @('ayan-brand.js','ayan-mark.svg','ayan-icon.png')){
+foreach($file in @('ayan-brand.js','ayan-mark.svg','ayan-mark-static.webp','ayan-icon.png')){
  if(!(Test-Path (Join-Path $assets $file))){throw ('MISSING_ASSET_'+$file)}
  & $docker cp (Join-Path $assets $file) ($target+':/opt/agent-canvas/frontend/ayan-os/'+$file)
  if($LASTEXITCODE -ne 0){throw ('COPY_FAILED_'+$file)}
@@ -26,7 +26,7 @@ if($LASTEXITCODE -ne 0){throw 'HTML_PATCH_FAILED'}
 $root='http://127.0.0.1:18080/canvas/'
 $entry=(Invoke-WebRequest $root -UseBasicParsing -TimeoutSec 12).Content
 if($entry -notmatch 'ayan-brand.js'){throw 'SCRIPT_REFERENCE_MISSING'}
-foreach($item in @('ayan-brand.js','ayan-mark.svg','ayan-icon.png')){
+foreach($item in @('ayan-brand.js','ayan-mark.svg','ayan-mark-static.webp','ayan-icon.png')){
  $response=Invoke-WebRequest ($root+'ayan-os/'+$item) -UseBasicParsing -TimeoutSec 12
  if($response.StatusCode -ne 200){throw ('ASSET_HTTP_FAILED_'+$item)}
 }

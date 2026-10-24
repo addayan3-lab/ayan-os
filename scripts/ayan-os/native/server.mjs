@@ -11,6 +11,7 @@ import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Bridge, defaultRoot } from "../bridge/bridge.mjs";
 import { AYAN_NATIVE_VERSION, AYAN_NATIVE_CHANNEL } from "./version.mjs";
+import { proxyHttp, proxyUpgrade } from "./canvas-compat-proxy.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.AYAN_NATIVE_PORT || 18081);
@@ -20,10 +21,11 @@ if (!Number.isInteger(PORT) || PORT < 1024 || PORT > 65535) {
 const origin = "http://127.0.0.1:" + PORT;
 const bridge = new Bridge();
 const routes = new Map([
-  ["/", [join(here, "index.html"), "text/html; charset=utf-8"]],
+  ["/native/", [join(here, "index.html"), "text/html; charset=utf-8"]],
   ["/native.js", [join(here, "native.js"), "text/javascript; charset=utf-8"]],
   ["/native.css", [join(here, "native.css"), "text/css; charset=utf-8"]],
   ["/ayan-mark.svg", [resolve(here, "../../../public/ayan-os/ayan-mark.svg"), "image/svg+xml"]],
+  ["/ayan-mark-static.webp", [resolve(here, "../../../public/ayan-os/ayan-mark-static.webp"), "image/webp"]],
 ]);
 let busy = false;
 let lastStatus = null;
@@ -88,11 +90,18 @@ function authorize(req, res) {
 }
 async function handler(req, res) {
   const url = new URL(req.url || "/", origin);
+  // Preserve the full original Canvas UI as the primary entry during migration.
+  if (url.pathname === "/" && (req.method === "GET" || req.method === "HEAD")) {
+    res.writeHead(302, { ...security, location: "/canvas/" });
+    res.end();
+    return;
+  }
   if (req.method === "GET" || req.method === "HEAD") {
     if (url.pathname === "/api/health") return json(res, 200, {
       status: "ready", name: "阿岩 OS", mode: "windows-native", port: PORT,
       version: AYAN_NATIVE_VERSION, channel: AYAN_NATIVE_CHANNEL,
       dockerRequired: false, bridge: "Windows Agent Bridge V0.1", inferenceEnabled: false,
+      canvasCompatibility: { originalInterface: true, originalBackendRequiresDocker: true, upstreamPort: 18080 },
     });
     if (url.pathname === "/api/capabilities") return json(res, 200, {
       mode: "windows-native", capabilities: bridge.capabilities(),
@@ -107,9 +116,9 @@ async function handler(req, res) {
       try { return json(res, 200, await bridge.receipt(id)); }
       catch { return deny(res, 404, "未找到该任务回执"); }
     }
-    if (url.search || url.pathname.includes("..")) return deny(res, 404, "未找到页面");
     const route = routes.get(url.pathname);
-    if (!route) return deny(res, 404, "未找到页面");
+    if (!route) return proxyHttp(req, res);
+    if (url.search || url.pathname.includes("..")) return deny(res, 404, "未找到页面");
     try {
       const [file, type] = route;
       const data = await readFile(file);
@@ -118,7 +127,7 @@ async function handler(req, res) {
     return;
   }
   if (req.method !== "POST" || (url.pathname !== "/api/probe" && url.pathname !== "/api/status")) {
-    return deny(res, 405, "不支持此操作");
+    return proxyHttp(req, res);
   }
   if (!authorize(req, res)) return;
   if (busy) return deny(res, 429, "已有状态检查正在执行，请稍后再试");
@@ -143,6 +152,7 @@ const server = http.createServer((req, res) => {
     if (!res.headersSent) deny(res, 500, "服务处理失败"); else res.end();
   });
 });
+server.on("upgrade", (req, socket, head) => proxyUpgrade(req, socket, head));
 server.requestTimeout = 65000;
 server.headersTimeout = 10000;
 server.listen(PORT, "127.0.0.1", () => {

@@ -30,9 +30,12 @@ test("Windows Native dashboard: loopback, assets, allowed operations and receipt
   const health=await(await fetch(origin+"/api/health")).json();
   assert.equal(health.status,"ready");
   assert.equal(health.mode,"windows-native");
-  assert.equal(health.version,"0.2.3");
+  assert.equal(health.version,"0.2.4");
   assert.equal(health.dockerRequired,false);
-  for(const path of ["/","/native.js","/native.css","/ayan-mark.svg"]){
+  const landing=await fetch(origin+"/",{redirect:"manual"});
+  assert.equal(landing.status,302);
+  assert.equal(landing.headers.get("location"),"/canvas/");
+  for(const path of ["/native/","/native.js","/native.css","/ayan-mark-static.webp"]){
    const res=await fetch(origin+path);
    assert.equal(res.status,200,path);
    assert.equal(res.headers.get("x-content-type-options"),"nosniff");

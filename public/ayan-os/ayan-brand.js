@@ -21,14 +21,14 @@
    if(document.title!==title) document.title=title;
    let ico=document.querySelector('link[rel="icon"]');
    if(!ico){ico=document.createElement("link");ico.rel="icon";document.head.appendChild(ico)}
-   const path=base+"ayan-mark.svg";
-   if(ico.getAttribute("href")!==path){ico.type="image/svg+xml";ico.href=path}
+   const path=base+"ayan-mark-static.webp";
+   if(ico.getAttribute("href")!==path){ico.type="image/webp";ico.href=path}
  }
  function badge(){
    if(document.getElementById("ayan-os-brand"))return;
    const el=document.createElement("div");
    el.id="ayan-os-brand";el.setAttribute("aria-label","阿岩 OS");
-   const icon=document.createElement("img");icon.src=base+"ayan-mark.svg";icon.alt="";
+   const icon=document.createElement("img");icon.src=base+"ayan-mark-static.webp";icon.alt="";
    const words=document.createElement("span");words.className="ayan-text";
    const zh=document.createElement("span");zh.className="ayan-name";zh.textContent="阿岩 OS";
    const en=document.createElement("span");en.className="ayan-name-en";en.textContent="AYAN OS";
