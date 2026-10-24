@@ -30,7 +30,7 @@ test("Windows Native dashboard: loopback, assets, allowed operations and receipt
   const health=await(await fetch(origin+"/api/health")).json();
   assert.equal(health.status,"ready");
   assert.equal(health.mode,"windows-native");
-  assert.equal(health.version,"0.2.4");
+  assert.equal(health.version,"0.2.5");
   assert.equal(health.dockerRequired,false);
   const landing=await fetch(origin+"/",{redirect:"manual"});
   assert.equal(landing.status,302);
@@ -41,6 +41,21 @@ test("Windows Native dashboard: loopback, assets, allowed operations and receipt
    assert.equal(res.headers.get("x-content-type-options"),"nosniff");
    assert.ok((await res.text()).length>100);
   }
+  const page=await fetch(origin+"/native/jobs/");
+  assert.equal(page.status,200);
+  assert.match(await page.text(),/任务中心/);
+  const jobList=await(await fetch(origin+"/api/ayan/jobs")).json();
+  assert.ok(Array.isArray(jobList.jobs));
+  const blockedJob=await fetch(origin+"/api/ayan/jobs",{
+    method:"POST",headers:{"content-type":"application/json","X-AYAN-Local":"1"},
+    body:JSON.stringify({kind:"run-video"})
+  });
+  assert.equal(blockedJob.status,403);
+  const unauthJob=await fetch(origin+"/api/ayan/jobs",{
+    method:"POST",headers:{"content-type":"application/json"},
+    body:JSON.stringify({kind:"h3-readonly-audit"})
+  });
+  assert.equal(unauthJob.status,403);
   const cap=await(await fetch(origin+"/api/capabilities")).json();
   assert.equal(cap.capabilities.length,5);
   const denied=await fetch(origin+"/api/probe",{

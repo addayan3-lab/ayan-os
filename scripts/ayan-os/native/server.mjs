@@ -12,6 +12,7 @@ import { fileURLToPath } from "node:url";
 import { Bridge, defaultRoot } from "../bridge/bridge.mjs";
 import { AYAN_NATIVE_VERSION, AYAN_NATIVE_CHANNEL } from "./version.mjs";
 import { proxyHttp, proxyUpgrade } from "./canvas-compat-proxy.mjs";
+import { AuditRunner } from "./audit-runner.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.AYAN_NATIVE_PORT || 18081);
@@ -20,8 +21,12 @@ if (!Number.isInteger(PORT) || PORT < 1024 || PORT > 65535) {
 }
 const origin = "http://127.0.0.1:" + PORT;
 const bridge = new Bridge();
+const audit = new AuditRunner({bridge});
+await audit.init();
 const routes = new Map([
   ["/native/", [join(here, "index.html"), "text/html; charset=utf-8"]],
+  ["/native/jobs/", [join(here, "jobs.html"), "text/html; charset=utf-8"]],
+  ["/native/jobs.js", [join(here, "jobs.js"), "text/javascript; charset=utf-8"]],
   ["/native.js", [join(here, "native.js"), "text/javascript; charset=utf-8"]],
   ["/native.css", [join(here, "native.css"), "text/css; charset=utf-8"]],
   ["/ayan-mark.svg", [resolve(here, "../../../public/ayan-os/ayan-mark.svg"), "image/svg+xml"]],
@@ -97,6 +102,21 @@ async function handler(req, res) {
     return;
   }
   if (req.method === "GET" || req.method === "HEAD") {
+    if (url.pathname === "/api/ayan/jobs") return json(res,200,{jobs:audit.list(),active:audit.active});
+    if (url.pathname.startsWith("/api/ayan/jobs/")) {
+      const suffix=url.pathname.slice("/api/ayan/jobs/".length);
+      const match=/^([0-9a-f-]{36})(\/report)?$/.exec(suffix);
+      if(!match) return deny(res,400,"任务编号无效");
+      const id=match[1];
+      if(match[2]) {
+        const report=await audit.report(id);
+        if(report===null)return deny(res,404,"报告不存在");
+        res.writeHead(200,{...security,"content-type":"text/markdown; charset=utf-8"});
+        res.end(req.method==="HEAD"?undefined:report);return;
+      }
+      const receipt=audit.get(id);
+      return receipt?json(res,200,receipt):deny(res,404,"任务不存在");
+    }
     if (url.pathname === "/api/health") return json(res, 200, {
       status: "ready", name: "阿岩 OS", mode: "windows-native", port: PORT,
       version: AYAN_NATIVE_VERSION, channel: AYAN_NATIVE_CHANNEL,
@@ -125,6 +145,15 @@ async function handler(req, res) {
       res.writeHead(200, { ...security, "content-type": type }); res.end(req.method === "HEAD" ? undefined : data);
     } catch { deny(res, 503, "原生界面资源尚未准备好"); }
     return;
+  }
+  if (req.method === "POST" && url.pathname === "/api/ayan/jobs") {
+    if(!authorize(req,res))return;
+    let payload;
+    try{payload=await getBody(req)}catch(error){return deny(res,error.status||400,error.message)}
+    if(!payload||Array.isArray(payload)||Object.keys(payload).length!==1||payload.kind!=="h3-readonly-audit")
+      return deny(res,403,"仅允许 H3 只读工作流体检");
+    const outcome=await audit.submit(payload.kind);
+    return json(res,outcome.deduplicated?200:202,outcome);
   }
   if (req.method !== "POST" || (url.pathname !== "/api/probe" && url.pathname !== "/api/status")) {
     return proxyHttp(req, res);

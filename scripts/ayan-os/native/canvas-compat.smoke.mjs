@@ -36,7 +36,7 @@ const script=(await get(native+"/canvas/ayan-os/ayan-brand.js")).body.toString("
 assert.ok(script.includes("ayan-mark-static.webp"));
 assert.ok(!script.includes("ayanBreath"));
 const health=await(await fetch(native+"/api/health")).json();
-assert.equal(health.version,"0.2.4");
+assert.equal(health.version,"0.2.5");
 assert.equal(health.mode,"windows-native");
 assert.equal(health.canvasCompatibility.originalBackendRequiresDocker,true);
 assert.equal((await get(native+"/native/")).status,200);

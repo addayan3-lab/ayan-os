@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>阿岩 OS · 任务中心 V0.2.5</title><link rel="icon" type="image/webp" href="/ayan-mark-static.webp"/>
+<link rel="stylesheet" href="/native.css"/><script src="/native/jobs.js" defer></script></head>
+<body><div class="app">
+<aside class="sidebar">
+ <div class="brand"><img src="/ayan-mark-static.webp" alt=""/><div><strong>阿岩 OS</strong><span>AYAN TASK CONTROL</span></div></div>
+ <div class="side-label">任务中心</div><nav>
+  <a href="/canvas/"><span>⌂</span> 原版 Canvas</a>
+  <a class="active" href="/native/jobs/"><span>▤</span> 任务执行与回执</a>
+  <a href="/native/"><span>◈</span> Agent 检查</a>
+ </nav>
+ <div class="side-note"><span class="state-dot"></span>Windows 原生 Bridge
+  <small>只读体检 · 本地工作流 · 不启动 GPU</small></div>
+</aside>
+<main>
+<header class="topbar"><div class="breadcrumb"><a href="/canvas/">阿岩 OS</a> <span>/</span><b>任务中心</b></div>
+ <div class="top-right"><span class="mode-pill">V0.2.5 · G07</span></div></header>
+<div class="container">
+ <div class="heading"><div class="eyebrow">WINDOWS NATIVE AGENT ORCHESTRATION</div>
+ <h1>多 Agent 任务中心</h1>
+ <p>保留原版 Canvas 作为首页。这里让多个本地 Agent 按预定步骤执行同一项审核任务，并产生可复查的独立回执。</p></div>
+ <section class="hero">
+  <div><span class="hero-tag">H3 工作流只读体检 · 第一项真实任务</span>
+   <h2>检查现有 H3 工作流与 5 个适配器</h2>
+   <p>依次进行 Codex、OpenCode、DeepSeek 协议检查、ComfyUI 健康检查、字字动画交接格式校验以及 4 个本地 H3 JSON 文件盘点。</p>
+   <div class="hero-actions"><button class="primary" id="create">下发体检任务</button>
+    <button class="ghost" id="refresh">刷新状态</button><span id="feedback" aria-live="polite">准备就绪</span></div>
+  </div><img class="hero-logo" src="/ayan-mark-static.webp" alt="静态山水金色 A 标志"/>
+ </section>
+ <section class="summary">
+  <div class="stat"><span>运行模式</span><strong>Windows</strong><small>Docker 不参与 Bridge 执行</small></div>
+  <div class="stat"><span>已登记任务</span><strong id="job-count">0</strong><small>留存于本机独立回执目录</small></div>
+  <div class="stat"><span>正在执行</span><strong id="active">0</strong><small>单任务防重复执行</small></div>
+  <div class="stat"><span>生产写入</span><strong>禁用</strong><small>不修改影视资产、不请求推理</small></div>
+ </section>
+ <div class="section-title"><div><h2>任务清单与逐步回执</h2>
+  <p>系统会记录每一阶段的成功、失败和回执编号，支持查看完整报告。</p></div>
+  <span class="hint">点击任务展开详情</span></div>
+ <div id="jobs" class="agents"><div class="loading">正在加载任务…</div></div>
+ <div class="section-title"><div><h2>当前任务详情</h2><p>每个任务独立记录，重启服务后可恢复查看。</p></div></div>
+ <div class="panel"><div id="detail" class="loading">请选择上方任务查看分阶段执行情况。</div></div>
+ <div class="section-title"><div><h2>验收报告</h2><p>包含工作流数量与节点统计，不包含影视资产原文。</p></div>
+  <button class="ghost" id="get-report" disabled>查看报告</button></div>
+ <div class="panel"><pre id="report-text">任务执行完成后，可在此查看文字报告。</pre></div>
+ <footer>任务回执位置：C:\AI\ayan-os-runtime\windows-native\jobs · <span id="footer-status">本地只读模式</span></footer>
+</div></main></div>
+<div id="toast" role="status" aria-live="polite"></div>
+</body></html>
