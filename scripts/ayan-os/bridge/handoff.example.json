@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "taskId": "isolated-one-minute-sample",
+  "shots": [
+    {
+      "id": "shot-01",
+      "duration": 30,
+      "prompt": "Synthetic opening; no production assets."
+    },
+    {
+      "id": "shot-02",
+      "duration": 30,
+      "prompt": "Synthetic ending; no generation requested."
+    }
+  ]
+}

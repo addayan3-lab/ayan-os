@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "ayan-windows-agent-bridge": {
+      "command": "node",
+      "args": [
+        "C:\\AI\\ayan-os\\scripts\\ayan-os\\bridge\\windows-agent-bridge.mjs",
+        "mcp"
+      ]
+    }
+  }
+}

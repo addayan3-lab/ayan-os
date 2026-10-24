@@ -8,7 +8,9 @@
  */
 import readline from "node:readline";
 
-const API = "http://host.docker.internal:8188";
+const API = process.env.AYAN_COMFYUI_HOST_MODE === "windows"
+  ? "http://127.0.0.1:8188"
+  : "http://host.docker.internal:8188";
 const TOOLS = [
   {
     name: "comfyui_health",
@@ -22,7 +24,13 @@ const TOOLS = [
   }
 ];
 async function safeGet(path) {
-  const result = await fetch(API + path, { method: "GET", signal: AbortSignal.timeout(8000) });
+  let result;
+  try {
+    result = await fetch(API + path, { method: "GET", redirect: "error", signal: AbortSignal.timeout(8000) });
+  } catch (error) {
+    if (["EACCES", "EPERM"].includes(error.cause?.code)) throw new Error("NETWORK_DENIED");
+    throw error;
+  }
   if (!result.ok) throw new Error("ComfyUI returned HTTP " + result.status);
   return result.json();
 }

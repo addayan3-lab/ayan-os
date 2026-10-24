@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-24T03:36:32.720Z",
+  "mode": "isolated-no-inference",
+  "liveChecks": [
+    {
+      "schemaVersion": 1,
+      "bridgeVersion": "0.1.0",
+      "id": "3b4e71a6-d51d-4c2e-96fa-78df151bef7a",
+      "adapter": "codex",
+      "operation": "check",
+      "state": "succeeded",
+      "startedAt": "2026-10-24T03:36:30.513Z",
+      "finishedAt": "2026-10-24T03:36:30.591Z",
+      "policy": {
+        "inference": false,
+        "paidApi": false,
+        "gpu": false,
+        "productionAssetWrites": false
+      },
+      "data": {
+        "version": "0.163.0-alpha.11.2",
+        "installed": true,
+        "auth": "chatgpt-subscription",
+        "authSource": "official-login-status",
+        "inferenceVerified": false
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "bridgeVersion": "0.1.0",
+      "id": "82abeccd-c606-4692-b061-744dd27e3d43",
+      "adapter": "opencode",
+      "operation": "check",
+      "state": "succeeded",
+      "startedAt": "2026-10-24T03:36:30.594Z",
+      "finishedAt": "2026-10-24T03:36:31.150Z",
+      "policy": {
+        "inference": false,
+        "paidApi": false,
+        "gpu": false,
+        "productionAssetWrites": false
+      },
+      "data": {
+        "version": "2.1.2",
+        "installed": true,
+        "acp": {
+          "initialized": true,
+          "protocolVersion": 1,
+          "canLoadSession": true
+        },
+        "auth": "not-checked",
+        "inferenceVerified": false
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "bridgeVersion": "0.1.0",
+      "id": "d6c3ad92-6f5f-46b0-879a-1ae7e2465b4b",
+      "adapter": "deepseek",
+      "operation": "check",
+      "state": "succeeded",
+      "startedAt": "2026-10-24T03:36:31.153Z",
+      "finishedAt": "2026-10-24T03:36:32.246Z",
+      "policy": {
+        "inference": false,
+        "paidApi": false,
+        "gpu": false,
+        "productionAssetWrites": false
+      },
+      "data": {
+        "version": "0.2.1-rc.2",
+        "installed": true,
+        "acp": {
+          "initialized": true,
+          "protocolVersion": 1,
+          "canLoadSession": false
+        },
+        "auth": "not-checked",
+        "inferenceVerified": false
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "bridgeVersion": "0.1.0",
+      "id": "aa79e3cf-3f18-4dd2-84fc-efc094499700",
+      "adapter": "zzdh",
+      "operation": "check",
+      "state": "succeeded",
+      "startedAt": "2026-10-24T03:36:32.249Z",
+      "finishedAt": "2026-10-24T03:36:32.317Z",
+      "policy": {
+        "inference": false,
+        "paidApi": false,
+        "gpu": false,
+        "productionAssetWrites": false
+      },
+      "data": {
+        "officialDocsSha256": {
+          "AI_CODING_GUIDE.md": "e16ecf61762977a2ea1818995acac41c40982d09f212bc7d66d8f5e78dda1680",
+          "TOOL_PLUGIN_DEV_GUIDE.md": "60ecc63d715641638f7a02576ffcda2c2e7ca97107976b5d1ef28dd4385c3f31",
+          "GENERATION_PLUGIN_DEV_GUIDE.md": "a4d870325578d16f15c304ceb418ecaf805415b0c4b06ed7202614c2dfa2e536"
+        },
+        "selfTest": true,
+        "handoff": {
+          "ok": true,
+          "shotCount": 2,
+          "totalSeconds": 60,
+          "generatedMedia": false,
+          "productionAssetWrites": false
+        },
+        "pluginHostExecution": "not-verified",
+        "standaloneCliMcp": "not-documented-in-inspected-public-docs"
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "bridgeVersion": "0.1.0",
+      "id": "52d709a0-e861-46d7-9abc-eb04009a3ed8",
+      "adapter": "comfyui",
+      "operation": "check",
+      "state": "failed",
+      "startedAt": "2026-10-24T03:36:32.319Z",
+      "finishedAt": "2026-10-24T03:36:32.428Z",
+      "policy": {
+        "inference": false,
+        "paidApi": false,
+        "gpu": false,
+        "productionAssetWrites": false
+      },
+      "error": {
+        "code": "NETWORK_DENIED",
+        "retryable": false,
+        "message": "The execution environment denied the read-only local socket connection."
+      }
+    }
+  ],
+  "codexProtocol": {
+    "schemaVersion": 1,
+    "bridgeVersion": "0.1.0",
+    "id": "b526b7cc-8f5d-435b-a62d-daf527d79553",
+    "adapter": "codex",
+    "operation": "protocol-check",
+    "state": "failed",
+    "startedAt": "2026-10-24T03:36:32.431Z",
+    "finishedAt": "2026-10-24T03:36:32.543Z",
+    "policy": {
+      "inference": false,
+      "paidApi": false,
+      "gpu": false,
+      "productionAssetWrites": false
+    },
+    "error": {
+      "code": "STATE_RUNTIME_UNAVAILABLE",
+      "retryable": false,
+      "message": "The official Codex state runtime could not be initialized in the current filesystem permissions."
+    }
+  },
+  "comfyQueue": {
+    "schemaVersion": 1,
+    "bridgeVersion": "0.1.0",
+    "id": "59a5353b-7a82-4bb2-9d3b-145d428a2140",
+    "adapter": "comfyui",
+    "operation": "queue-counts",
+    "state": "failed",
+    "startedAt": "2026-10-24T03:36:32.547Z",
+    "finishedAt": "2026-10-24T03:36:32.642Z",
+    "policy": {
+      "inference": false,
+      "paidApi": false,
+      "gpu": false,
+      "productionAssetWrites": false
+    },
+    "error": {
+      "code": "NETWORK_DENIED",
+      "retryable": false,
+      "message": "The execution environment denied the read-only local socket connection."
+    }
+  },
+  "policyChecks": {
+    "deniedGeneration": true,
+    "invalidHandoffRejected": true,
+    "receiptRoundTrips": 9
+  },
+  "allLiveChecksPassed": false
+}

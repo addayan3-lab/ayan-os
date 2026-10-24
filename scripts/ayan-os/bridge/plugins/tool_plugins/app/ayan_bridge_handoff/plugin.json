@@ -1,0 +1,37 @@
+{
+  "name": "ayan_bridge_handoff",
+  "display_name": "AYAN 任务交接检查（只读）",
+  "description": "通过官方 Python 工具插件检查宿主响应与离线分镜交接数据；不生成、不修改作品、不调用模型。",
+  "version": "0.1.0",
+  "scope": "app",
+  "expose_as_tool": true,
+  "input_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "operation": {
+        "type": "string",
+        "enum": [
+          "status",
+          "handoff-check"
+        ]
+      },
+      "handoff": {
+        "type": "object"
+      }
+    },
+    "required": [
+      "operation"
+    ]
+  },
+  "declared_capabilities": [
+    {
+      "id": "host_status",
+      "description": "读取宿主连接状态工具的响应；不返回项目路径",
+      "requires_tools": [
+        "zzdh_connection_status"
+      ],
+      "effects": []
+    }
+  ]
+}
