@@ -51,7 +51,31 @@
     "Research": "研究",
     "Code review": "代码审查",
     "Operations": "运营管理",
-    "Custom": "自定义"
+    "Custom": "自定义",
+    "Check frequency": "检查频率",
+    "How often to look for newly labelled issues.": "多久检查一次新增的带标签议题。",
+    "Timezone": "时区",
+    "Timezone the schedule is interpreted in.": "执行计划使用的时区。",
+    "Repositories": "代码仓库",
+    "The repositories whose labelled issues are implemented. Each is polled independently and keeps its own state, so issue numbers never collide between them.": "将处理其中带指定标签的议题；各仓库独立检查、独立记录进度，避免不同仓库的议题编号混淆。",
+    "Trigger label": "触发标签",
+    "Only issues carrying this label are worked on.": "仅处理带有此标签的议题。",
+    "Branch prefix": "分支前缀",
+    "Branches are named after this prefix and the issue number, such as openhands/issue-42.": "分支名由此前缀和议题编号组成，例如 openhands/issue-42。",
+    "Pull request mode": "PR 创建模式",
+    "Whether the pull request is opened as draft or ready for review.": "选择以草稿形式创建 PR，或直接提交待审核。",
+    "Draft": "草稿",
+    "Ready for review": "准备审核",
+    "GitHub token secret": "GitHub 令牌密钥",
+    "Implement ready GitHub issues, address pull request feedback, and publish tested changes for review.": "实现已准备好的 GitHub 议题、处理 PR 审核意见，并提交经过测试的改动供审核。",
+    "Select the plugins you want to add to this conversation.": "选择要添加到当前对话的插件。",
+    "Selected": "已选择",
+    "No plugins selected": "尚未选择插件",
+    "Done": "完成",
+    "Back": "返回",
+    "Continue": "继续",
+    "Add": "添加",
+    "Create": "创建"
   });
   let catalog = null;
   let queued = false;
@@ -131,7 +155,8 @@
 
   function repaint() {
     queued = false;
-    if (!/^(zh)(-|$)/i.test(document.documentElement.lang || navigator.language || "")) return;
+    // AYAN OS is explicitly configured for Chinese UI; the upstream document reports lang="en".
+    // Never use the upstream HTML lang attribute to disable this display-only translation.
     updateCatalog();
     updateAutomationUI();
   }

@@ -115,6 +115,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <script src="/canvas/ayan-os/skill-intros.zh-CN.js" defer />
         {/* Catalog summaries are translated only in the UI; API and Agent text stay original. */}
         <script src="/canvas/ayan-os/catalog-intros.zh-CN.js" defer />
+        {/* AYAN OS dynamic brand mark and browser identity. */}
+        <script src="/canvas/ayan-os/ayan-brand.js" defer />
         <Scripts />
       </body>
     </html>
