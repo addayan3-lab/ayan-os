@@ -111,6 +111,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div id="modal-portal-exit" />
         </AgentServerUIRoot>
         <ScrollRestoration />
+        {/* AYAN OS: Chinese summaries on skill cards only; original Skill data stays English. */}
+        <script src="/canvas/ayan-os/skill-intros.zh-CN.js" defer />
         <Scripts />
       </body>
     </html>
