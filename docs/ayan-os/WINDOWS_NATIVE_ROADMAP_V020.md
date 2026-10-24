@@ -1,6 +1,6 @@
 # 阿岩 OS · Windows Native 路线图（十项目标）
 
-- 当前版本：**V0.2.0**（第一阶段：零 npm 下载的 Windows 原生控制台 + 已验证 Windows Agent Bridge）
+- 当前版本：**V0.2.3**（第一阶段：零 npm 下载的 Windows 原生控制台 + 已验证 Windows Agent Bridge）
 - 版本源：\`scripts/ayan-os/native/version.mjs\`；运行中接口：\`GET http://127.0.0.1:18081/api/health\`
 - 代码工作分支：\`ayan-os/base-validation\`；不合并 main，禁止破坏性 git 清理。
 - 工作机器：AI01，\`C:\AI\ayan-os\`。不覆盖原有 \`18080\`、\`9630\`、\`8188\`。
@@ -35,3 +35,11 @@
 - \`GET /api/health\` 的 \`mode=windows-native\`、\`dockerRequired=false\`；\`GET /\` HTTP 200。
 - Codex Windows 本机发现路径修复：允许发现已有官方 Codex 桌面 \`AppData\Local\OpenAI\Codex\bin\*\codex.exe\`。
 - 原版 Docker \`18080\` 和原 \`9630\`、\`8188\` 继续保留，逐阶段迁移。
+
+
+## 当前进展（2026-10-24）
+
+- G01 已验收：18081 原生控制台、桌面快捷方式。
+- G02/G03/G04 已验收基础协议：Codex 官方 login status 与 app-server 初始化；OpenCode、DeepSeek Harness ACP 连续两次握手通过，未调用推理。详见 WINDOWS_NATIVE_VALIDATION_V023.md。
+- G05 未验收：字字动画独立插件校验通过，官方宿主内执行尚未验证。
+- G06 只读健康与队列检查通过；完整工作流索引仍待实施。
