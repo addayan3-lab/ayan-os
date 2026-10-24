@@ -18,6 +18,20 @@ if (-not $Start) {
   Write-Output 'To launch when prerequisites are met, re-run with -Start.'
   exit 0
 }
+# Reuse an existing verified instance; never overwrite someone else's container.
+$dockerExe = 'C:\Program Files\Docker\Docker\resources\bin\docker.exe'
+if (Test-Path $dockerExe) {
+  $names = @(& $dockerExe ps -a --format '{{.Names}}')
+  if ($names -contains $container) {
+    & (Join-Path $PSScriptRoot 'verify-runtime.ps1')
+    if ($LASTEXITCODE -eq 0) {
+      Write-Output ('ALREADY_RUNNING_VERIFIED=' + $container)
+      exit 0
+    }
+    Write-Output 'START_BLOCKED: Existing container failed verification; do not overwrite.'
+    exit 3
+  }
+}
 & $preflight
 if ($LASTEXITCODE -ne 0) {
   Write-Output 'START_BLOCKED: Docker prerequisites did not pass.'

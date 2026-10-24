@@ -4,8 +4,9 @@
 AI01：Windows 11 Home / i7-13700KF / WSL 3.0.3 / Node.js 24 / Git。
 系统报告 HypervisorPresent=True；同时 WMI 的 VirtualizationFirmwareEnabled=False。
 两者不能证明 BIOS 一定关闭虚拟化；以 Docker/WSL2 实际启动诊断为准。
-Docker Desktop / docker.exe 尚未安装；Remote MCP 当前不是管理员；没有可用的 WSL Linux 发行版。
-C:\AI\ayan-os 源码和本地 ayan-os/base-validation 验证分支已存在，但 Docker 容器未启动。
+历史初检时 Docker Desktop / docker.exe 尚未安装；Remote MCP 当前不是管理员。
+随后 Docker Desktop 已安装，Linux Engine 返回 linux / 29.9.2，WSL 中出现 docker-desktop。
+C:\AI\ayan-os 源码和本地 ayan-os/base-validation 验证分支均正常，Docker 容器已启动并通过只读健康检查。
 
 ## 隔离设计（先约束后启动）
 上游镜像：ghcr.io/openhands/agent-canvas:1.33.0（来源：本地 README.windows.md 示例）
@@ -54,5 +55,9 @@ docker rm ayan-os-openhands-v01
 容器删除后独立测试目录仍在，未核验前不要删除目录。
 
 ## 当前状态
-已准备隔离脚本和环境检测。Docker Desktop 未安装，因此容器启动和 Agent Server 真正健康检查尚未执行。
-不得用无沙箱宿主 Agent 代替，也不得声称系统已运行。
+2026-10-24 实测：Docker Desktop Linux Engine 29.9.2 可用；官方镜像 Agent Canvas 1.33.0 已拉取。
+容器 ayan-os-openhands-v01 运行中，/canvas、/health、/alive、/ready、/api/automation/health 均返回 HTTP 200。
+Agent Server /ready 内容为 {"status":"ready"}，SDK / Agent Server 为 1.58.1。
+只读复验命令：powershell -NoProfile -ExecutionPolicy Bypass -File "C:\AI\ayan-os\scripts\ayan-os\docker\verify-runtime.ps1"
+未调用 LLM、没有创建 Agent 会话，也未进行模型成本或真实任务验收。
+后续任何模型执行须另经授权；禁止以宿主机无沙箱模式代替隔离容器。

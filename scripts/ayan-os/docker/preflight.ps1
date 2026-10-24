@@ -18,9 +18,16 @@ if(Test-Path (Join-Path $repo '.git')) {
 $wsl = Get-Command wsl.exe -ErrorAction SilentlyContinue
 Report 'WSL binary' ([bool]$wsl) $(if($wsl){'available'}else{'missing'})
 $dockerCmd = Get-Command docker.exe -ErrorAction SilentlyContinue
+if (-not $dockerCmd) {
+  $dockerBin = 'C:\Program Files\Docker\Docker\resources\bin'
+  if (Test-Path (Join-Path $dockerBin 'docker.exe')) {
+    $env:PATH += ';' + $dockerBin
+    $dockerCmd = Get-Command docker.exe -ErrorAction SilentlyContinue
+  }
+}
 Report 'Docker CLI' ([bool]$dockerCmd) $(if($dockerCmd){$dockerCmd.Source}else{'Docker Desktop not installed'})
 if($dockerCmd) {
-  $engine = (& docker info --format '{{.OSType}}' 2>$null | Select-Object -First 1)
+  $engine = (& docker info --format '{{.OSType}}' 2>$null)
   Report 'Docker Linux engine' ($LASTEXITCODE -eq 0 -and $engine -eq 'linux') $(if($engine){[string]$engine}else{'Docker Engine unavailable'})
 } else {
   Report 'Docker Linux engine' $false 'CLI missing'
