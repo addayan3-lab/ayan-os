@@ -113,6 +113,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ScrollRestoration />
         {/* AYAN OS: Chinese summaries on skill cards only; original Skill data stays English. */}
         <script src="/canvas/ayan-os/skill-intros.zh-CN.js" defer />
+        {/* Catalog summaries are translated only in the UI; API and Agent text stay original. */}
+        <script src="/canvas/ayan-os/catalog-intros.zh-CN.js" defer />
         <Scripts />
       </body>
     </html>
