@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="theme-color" content="#0d1828"/>
+  <meta name="description" content="阿岩 OS — Windows 原生 Agent 控制中心"/>
+  <title>阿岩 OS · Windows 原生</title>
+  <link rel="icon" href="/ayan-mark.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="/native.css"/>
+  <script src="/native.js" defer></script>
+</head>
+<body>
+ <div class="app">
+  <aside class="sidebar">
+   <div class="brand"><img src="/ayan-mark.svg" alt=""/><div><strong>阿岩 OS</strong><span>AYAN OS · Windows</span></div></div>
+   <div class="side-label">工作空间</div>
+   <nav aria-label="主导航">
+    <a class="active" href="#overview"><span>◈</span> 总览</a>
+    <a href="#agents"><span>▤</span> Agent 能力</a>
+    <a href="#receipts"><span>≡</span> 任务回执</a>
+    <a href="#links"><span>↗</span> 工作入口</a>
+   </nav>
+   <div class="side-note">
+     <span class="state-dot"></span><span>Windows 本地运行</span>
+     <small>无需 Docker · 不调用付费 API</small>
+   </div>
+  </aside>
+  <main>
+   <header class="topbar"><div class="breadcrumb">本地工作台 <span>/</span> <b>控制中心</b></div><div class="top-right"><span class="mode-pill">Windows Native V0.1</span><span id="clock"></span></div></header>
+   <div class="container">
+    <div class="heading" id="overview"><div class="eyebrow">AYAN · LOCAL INTELLIGENCE</div><h1>阿岩 OS 控制中心</h1><p>统一管理本机 AI 工具、检查接入状态和追踪任务回执。当前以安全检查为主，不自动生成图片、视频或调用付费接口。</p></div>
+    <section class="hero">
+      <div><span class="hero-tag">本机控制层 · 第一阶段</span><h2>你的 AI 助手，运行在 Windows。</h2><p>接通既有 Codex、OpenCode、DeepSeek Harness、字字动画与 ComfyUI 的安全检查通道。</p>
+       <div class="hero-actions"><button id="refresh" class="primary">检查全部连接</button><span id="check-note" aria-live="polite">点击检查以获取当前状态</span></div>
+      </div><img src="/ayan-mark.svg" alt="山水光影标识" class="hero-logo"/>
+    </section>
+    <section class="summary" aria-label="运行概览">
+     <div class="stat"><span>宿主环境</span><strong>Windows</strong><small>原生 Node 服务</small></div>
+     <div class="stat"><span>接入适配器</span><strong id="adapter-count">5</strong><small>官方 CLI / ACP / Plugin / MCP</small></div>
+     <div class="stat"><span>通过状态检查</span><strong id="passed-count">—</strong><small id="checked-time">尚未执行检查</small></div>
+     <div class="stat"><span>生产写入</span><strong>已禁用</strong><small>保留原有影视资产</small></div>
+    </section>
+    <div class="section-title" id="agents"><div><h2>Agent 连接与能力</h2><p>点击单项检查可验证连接，不会执行模型推理。</p></div><span class="hint">按适配器独立记录回执</span></div>
+    <div class="agents" id="agent-grid"><div class="loading">加载适配器能力中…</div></div>
+    <div class="section-title" id="receipts"><div><h2>最近任务回执</h2><p>结构化状态与错误分类，支持查看 JSON 明细。</p></div><button id="reload-receipts" class="ghost">刷新回执</button></div>
+    <div class="panel"><div id="receipts-body" class="receipts"><div class="loading">尚无回执数据</div></div></div>
+    <div class="section-title" id="links"><div><h2>工作入口</h2><p>保留已有项目与生产链路，便于渐进迁移。</p></div></div>
+    <div class="links">
+      <a href="http://127.0.0.1:9630/" target="_blank" rel="noopener noreferrer"><b>阿岩工作台</b><span>既有协作与任务管理 · 9630</span></a>
+      <a href="http://127.0.0.1:18080/canvas/" target="_blank" rel="noopener noreferrer"><b>Agent Canvas 备用</b><span>Docker 旧界面 · 18080</span></a>
+      <a href="http://127.0.0.1:8188/" target="_blank" rel="noopener noreferrer"><b>ComfyUI</b><span>已有 H3 工作流 · 仅查看入口</span></a>
+    </div>
+    <footer>阿岩 OS · 本地优先 · 保留每次任务回执 · <span id="footer-state">正在连接原生服务</span></footer>
+   </div>
+  </main>
+ </div>
+ <dialog id="receipt-dialog"><div class="dialog-title"><h2>任务回执</h2><button id="close-dialog" class="ghost">关闭</button></div><pre id="receipt-json"></pre><button id="copy-receipt" class="ghost">复制 JSON</button></dialog>
+ <div id="toast" role="status" aria-live="polite"></div>
+</body></html>

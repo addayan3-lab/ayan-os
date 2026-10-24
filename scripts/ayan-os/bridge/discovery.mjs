@@ -1,10 +1,19 @@
-import { access } from "node:fs/promises";
+import { access, readdir } from "node:fs/promises";
 import { homedir } from "node:os";
 import { delimiter, join } from "node:path";
 
 async function exists(path) { try { await access(path); return true; } catch { return false; } }
 async function first(paths) { for (const path of paths.filter(Boolean)) if (await exists(path)) return path; }
 export const defaultZzdhRoot = () => join(homedir(), "Downloads", "字字动画_9_0_9", "字字动画_9_0_9");
+
+/** Inspect executable filenames only under the official installed Windows Codex app. */
+async function windowsCodexExecutables(local) {
+  const directory = join(local, "OpenAI", "Codex", "bin");
+  try {
+    const entries = (await readdir(directory, { withFileTypes: true })).filter(x => x.isDirectory());
+    return entries.map(x => join(directory, x.name, "codex.exe"));
+  } catch { return []; }
+}
 
 /** Only known install entries; never enumerate or read credential/config databases. */
 export async function discover() {
@@ -15,6 +24,7 @@ export async function discover() {
   const codex = await first([
     process.env.AYAN_CODEX_EXE,
     process.env.CODEX_ELECTRON_RESOURCES_PATH && join(process.env.CODEX_ELECTRON_RESOURCES_PATH, "codex.exe"),
+    ...await windowsCodexExecutables(local),
     ...pathEntries.map(x => join(x, "codex.exe")),
     join(roaming, "npm", "node_modules", "@openai", "codex", "vendor", "x86_64-pc-windows-msvc", "codex", "codex.exe"),
   ]);
